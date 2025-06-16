@@ -9,5 +9,9 @@ NGINX:
 
 - [x] Learn .dockerignore
 - [x] Learn my.cnf
-- [ ] Learn secret files usage like db_password.txt usage
-- [ ] Learn deeply docker composes
+- [x] Learn secret files usage like db_password.txt usage
+- [x] Learn deeply docker composes
+
+---
+
+[ ] Manage the secrets in docker compose and then update .env with value paths

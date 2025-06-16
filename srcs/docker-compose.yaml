@@ -12,19 +12,38 @@ services:
       - wp_network
     expose:
       - "3306"
+    restart: always
 
-  web:
+  nginx:
     build:
       context: ./nginx
+    volumes:
+      - wp_data:/var/www/html
     ports:
       - "8080:443"
     depends_on:
-      - db
+      - wp
     networks:
       - wp_network
+    restart: always
+  wp:
+    build:
+      context: ./wordpress
+    env_file:
+      - ./.env
+    volumes:
+      - wp_data:/var/www/html
+    depends_on:
+      - db
+    ports: 
+      - "9000:9000"
+    networks:
+      - wp_network
+    restart: always
 
 volumes:
   db_data:
+  wp_data:
 
 networks:
   wp_network:
