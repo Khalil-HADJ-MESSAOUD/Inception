@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  db:
+    build:
+      context: ./mariadb
+    env_file:
+      - ./.env
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wp_network
+    expose:
+      - "3306"
+
+  web:
+    build:
+      context: ./nginx
+    ports:
+      - "8080:443"
+    depends_on:
+      - db
+    networks:
+      - wp_network
+
+volumes:
+  db_data:
+
+networks:
+  wp_network:
