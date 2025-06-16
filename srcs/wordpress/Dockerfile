@@ -6,6 +6,8 @@ RUN apt-get update && \
     apt-get install -y php php-fpm php-mysql php-gd php-zip php-xml php-mbstring unzip curl less && \
     rm -rf /var/lib/apt/lists/*
 
+RUN sed -i 's|^listen = .*|listen = 0.0.0.0:9000|' /etc/php/7.4/fpm/pool.d/www.conf
+
 WORKDIR /var/www/html
 
 RUN curl -fsSL https://wordpress.org/latest.tar.gz -o wp.tar.gz && \

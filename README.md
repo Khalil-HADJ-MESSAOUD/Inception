@@ -15,3 +15,4 @@ NGINX:
 ---
 
 [ ] Manage the secrets in docker compose and then update .env with value paths
+[ ] Setup port 443

@@ -8,21 +8,15 @@ until mysqladmin ping --silent; do
     sleep 1
 done
 
-if ! mysql -u root -e "USE $MYSQL_DATABASE;"; then
-    mysql -u root -e "CREATE DATABASE $MYSQL_DATABASE;"
-fi
+mysql -u root -e "CREATE DATABASE $MYSQL_DATABASE;"
 
-if mysql -u root -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = '$MYSQL_ROOT' AND host = 'localhost');"; then
-    mysql -u root -e "CREATE USER '$MYSQL_ROOT'@'localhost' IDENTIFIED BY 'pwtoreplacewithenvpw'";
-    mysql -u root -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_ROOT'@'localhost' WITH GRANT OPTION;";
-    mysql -u root -e "FLUSH PRIVILEGES;"
-fi
+mysql -u root -e "CREATE USER '$MYSQL_ROOT'@'localhost' IDENTIFIED BY '$MYSQL_ROOT_PASSWORD';";
+mysql -u root -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_ROOT'@'localhost' WITH GRANT OPTION;";
+mysql -u root -e "FLUSH PRIVILEGES;"
 
-if mysql -u root -e "SELECT EXISTS(SELECT 1 FROM mysql.user WHERE user = 'snitch-user' AND host = 'localhost');"; then
-    mysql -u root -e "CREATE USER 'snitch-user'@'localhost' IDENTIFIED BY '1234'";
-    mysql -u root -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO 'snitch-user'@'localhost';";
-    mysql -u root -e "FLUSH PRIVILEGES;"
-fi
+mysql -u root -e "CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_USER_PASSWORD';";
+mysql -u root -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'localhost';";
+mysql -u root -e "FLUSH PRIVILEGES;"
 
 mysqladmin shutdown
 
