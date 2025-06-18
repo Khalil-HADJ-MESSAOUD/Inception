@@ -14,5 +14,6 @@ NGINX:
 
 ---
 
-[ ] Manage the secrets in docker compose and then update .env with value paths
-[ ] Setup port 443
+- [ ] Manage the secrets in docker compose and then update .env with value paths
+- [x] Setup port 443
+- [ ] (optional) adjust volume perms

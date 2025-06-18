@@ -7,12 +7,12 @@ RUN apt-get update && \
 
 RUN mkdir -p /run/mysqld && chown mysql:mysql /run/mysqld
 
-COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+COPY ./mariadb-entrypoint.sh /mariadb-entrypoint.sh
 
-RUN chmod +x ./docker-entrypoint.sh
+RUN chmod +x ./mariadb-entrypoint.sh
 
 EXPOSE 3306
 
-ENTRYPOINT [ "./docker-entrypoint.sh" ]
+ENTRYPOINT [ "./mariadb-entrypoint.sh" ]
 
 CMD ["mysqld", "--user=mysql"]

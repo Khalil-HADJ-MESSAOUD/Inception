@@ -7,7 +7,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - db_data:/var/lib/mysql
+      - /home/khadj-me/data/db_data:/var/lib/mysql
     networks:
       - wp_network
     expose:
@@ -18,21 +18,22 @@ services:
     build:
       context: ./nginx
     volumes:
-      - wp_data:/var/www/html
+      - /home/khadj-me/data/wp_data:/var/www/html
     ports:
-      - "8080:80"
+      - "443:443"
     depends_on:
       - wp
     networks:
       - wp_network
     restart: always
+    
   wp:
     build:
       context: ./wordpress
     env_file:
       - ./.env
     volumes:
-      - wp_data:/var/www/html
+      - /home/khadj-me/data/wp_data:/var/www/html
     depends_on:
       - db
     ports: 
@@ -40,10 +41,6 @@ services:
     networks:
       - wp_network
     restart: always
-
-volumes:
-  db_data:
-  wp_data:
 
 networks:
   wp_network:
