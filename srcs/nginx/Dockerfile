@@ -7,8 +7,8 @@ RUN apt-get update && \
     openssl req -x509 -nodes -days 365 \
       -subj "/C=US/ST=State/L=City/O=Company/CN=localhost" \
       -newkey rsa:2048 \
-      -keyout /etc/nginx/ssl/server.key \
-      -out /etc/nginx/ssl/server.crt && \
+      -keyout /etc/nginx/ssl/khadj-me.42.fr.key \
+      -out /etc/nginx/ssl/khadj-me.42.fr.crt && \
     apt-get clean
 
 COPY nginx.conf /etc/nginx/nginx.conf

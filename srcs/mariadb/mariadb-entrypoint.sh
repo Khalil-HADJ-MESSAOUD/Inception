@@ -7,6 +7,9 @@ if [ ! -d /var/lib/mysql/mysql ]; then
     mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 fi
 
+sed -Ei "s/^\s*bind-address\s*=.*$/bind-address = 0.0.0.0/; t; \$a bind-address = 0.0.0.0" \
+    /etc/mysql/mariadb.conf.d/50-server.cnf
+
 mysqld --user=mysql &
 
 pid="$!"
@@ -24,8 +27,8 @@ if ! mysql -e "SELECT User FROM mysql.user WHERE User = '$MYSQL_ROOT';" | grep -
 fi
 
 if ! mysql -e "SELECT User FROM mysql.user WHERE User = '$MYSQL_USER';" | grep -q "$MYSQL_USER"; then
-    mysql -e "CREATE USER '$MYSQL_USER'@'%' IDENTIFIED BY '$MYSQL_PASSWORD';"
-    mysql -e "GRANT ALL PRIVILEGES ON \`$MYSQL_DATABASE\`.* TO '$MYSQL_USER'@'%';"
+    mysql -e "CREATE USER '$MYSQL_USER'@'localhost' IDENTIFIED BY '$MYSQL_PASSWORD';"
+    mysql -e "GRANT ALL PRIVILEGES ON $MYSQL_DATABASE.* TO '$MYSQL_USER'@'localhost';"
     mysql -e "FLUSH PRIVILEGES;"
 fi
 

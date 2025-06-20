@@ -6,4 +6,7 @@ fclean:
 	docker compose -f ./srcs/docker-compose.yaml down
 	docker system prune
 
+v:
+	sudo rm -rf /home/khadj-me/data
+
 re: fclean all
