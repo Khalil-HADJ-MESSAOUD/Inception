@@ -11,7 +11,7 @@ RUN apt-get update && \
       -out /etc/nginx/ssl/khadj-me.42.fr.crt && \
     apt-get clean
 
-COPY nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 EXPOSE 443
 

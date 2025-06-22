@@ -62,21 +62,8 @@ docker-compose --version
 
 echo "Creating volume dirs..."
 
-sudo mkdir -p /home/$USER/data
-
-sudo mkdir -p /home/$USER/data/db_data
-sudo mkdir -p /home/$USER/data/wp_data
-
-sudo chown -R 999:999 /home/$USER/data/db_data
-# adjust perms here
-sudo chmod -R 777 /home/$USER/data/db_data
-
-sudo chown -R www-data:www-data /home/$USER/data/wp_data
-# adjust perms here
-sudo chmod -R 777 /home/$USER/data/wp_data
-
 echo "Volumes successfully created"
 
-sudo sed -i 's/127.0.0.1 localhost/127.0.0.1 khadj-me.42.fr/' /etc/hosts
+sudo sed -i 's/^127\.0\.0\.1\s\+localhost$/127.0.0.1       khadj-me.42.fr/' /etc/hosts
 
 echo "Changed localhost to khadj-me.42.fr in /etc/hosts file"

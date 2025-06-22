@@ -3,20 +3,25 @@ version: '3.8'
 services:
   db:
     build:
-      context: ./mariadb
+      context: ./requirements/mariadb
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
     env_file:
       - ./.env
     volumes:
       - /home/khadj-me/data/db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
     networks:
       - wp_network
-    expose:
-      - "3306"
     restart: always
 
   nginx:
     build:
-      context: ./nginx
+      context: ./requirements/nginx
     volumes:
       - /home/khadj-me/data/wp_data:/var/www/html
     ports:
@@ -29,13 +34,14 @@ services:
     
   wp:
     build:
-      context: ./wordpress
+      context: ./requirements/wordpress
     env_file:
       - ./.env
     volumes:
       - /home/khadj-me/data/wp_data:/var/www/html
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports: 
       - "9000:9000"
     networks:

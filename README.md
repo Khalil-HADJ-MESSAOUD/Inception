@@ -17,12 +17,38 @@ NGINX:
 - [ ] Manage the secrets in docker compose and then update .env with value paths
 - [x] Setup port 443
 - [ ] (optional) adjust volume perms in vm-setup.sh
+- [ ] maybe remove user creation in mariadb entrypoint script
 
 # SETUP FOR EVAL
 
 - install git add user to sudo
 - git clone repo and exec ./vm-setup.sh
 - add user to docker
-- remember to adjust /etc/hosts with khadj-me.42.fr domain
-- setup wordpress
 
+---
+
+# ENV SETUP
+
+MYSQL_ROOT_PASSWORD=rootpass
+MYSQL_DATABASE=wp
+MYSQL_USER=wpuser
+MYSQL_PASSWORD=wppass
+
+WORDPRESS_DB_HOST=db
+WORDPRESS_DB_USER=wpuser
+WORDPRESS_DB_PASSWORD=wppass
+WORDPRESS_DB_NAME=wp
+
+WP_SITE_TITLE=BANGER
+WP_ADMIN_USER=goat
+WP_ADMIN_EMAIL=goat@gmail.com
+WP_ADMIN_PASSWORD=goatpw
+
+WP_EXTRA_USER=snitch
+WP_EXTRA_EMAIL=snitch@gmail.com
+WP_EXTRA_PASS=snitchpw
+WP_EXTRA_ROLE=author
+
+WP_DIR="/var/www/html"
+CONFIG_FILE="$WP_DIR/wp-config.php"
+SAMPLE_CONFIG="$WP_DIR/wp-config-sample.php"
