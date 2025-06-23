@@ -1,3 +1,4 @@
+USER = khadj-me
 
 all: up
 
@@ -14,7 +15,7 @@ down:
 v:
 	docker volume rm wp_data
 	docker volume rm db_data
-	sudo rm -rf /home/khadj-me/data
+	sudo rm -rf /home/$(USER)/data
 
 cache-clear:
 	docker builder prune
@@ -22,4 +23,18 @@ cache-clear:
 
 clean-all: down v cache-clear
 
+logs:
+	@if [ -z "$(CONTAINER)" ]; then \
+		echo "Erreur : il faut passer CONTAINER=nom_du_container"; \
+		exit 1; \
+	else \
+		docker logs -f $(CONTAINER); \
+	fi
+
 re: down all
+
+reset-volumes:
+	@echo "Suppression des volumes Docker wp_data et db_data..."
+	docker volume rm wp_data db_data || true
+	@echo "Suppression des dossiers locaux de données..."
+	rm -rf /home/$(USER)/data/db_data /home/$(USER)/data/wp_data
