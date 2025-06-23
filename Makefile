@@ -6,10 +6,8 @@ up:
 	sudo mkdir -p /home/$USER/data/db_data
 	sudo mkdir -p /home/$USER/data/wp_data
 	sudo chown -R 999:999 /home/$USER/data/db_data
-	# adjust perms here
 	sudo chmod -R 777 /home/$USER/data/db_data
 	sudo chown -R www-data:www-data /home/$USER/data/wp_data
-	# adjust perms here
 	sudo chmod -R 777 /home/$USER/data/wp_data
 	docker compose -f ./srcs/docker-compose.yaml up --build
 

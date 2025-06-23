@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
+WP_DIR="/var/www/html"
+CONFIG_FILE="$WP_DIR/wp-config.php"
+SAMPLE_CONFIG="$WP_DIR/wp-config-sample.php"
+
 if [ -z "$(ls -A "$WP_DIR")" ]; then
   echo "Copying files from wordpress source to $WP_DIR..."
   cp -r /usr/src/wordpress/* "$WP_DIR"
@@ -16,7 +20,7 @@ if [ ! -f "$CONFIG_FILE" ]; then
   sed -i "s/database_name_here/${MYSQL_DATABASE}/"  "$CONFIG_FILE"
   sed -i "s/username_here/${MYSQL_USER}/"           "$CONFIG_FILE"
   sed -i "s/password_here/${MYSQL_PASSWORD}/"       "$CONFIG_FILE"
-  sed -i "s/localhost/${MYSQL_HOST:-db}/"            "$CONFIG_FILE"
+  sed -i "s/localhost/${MYSQL_HOST:-mariadb}/"            "$CONFIG_FILE"
 
   if [[ "${WP_DEBUG,,}" == "true" ]]; then
     sed -i "s/define( 'WP_DEBUG', false );/define( 'WP_DEBUG', true );/" "$CONFIG_FILE"
@@ -55,7 +59,7 @@ if [ -n "${WP_EXTRA_USER:-}" ]; then
 fi
 
 echo "-------------------"
-echo "[ WORDPRESS READY ]"
+echo "| WORDPRESS READY |"
 echo "-------------------"
 
 exec "$@"

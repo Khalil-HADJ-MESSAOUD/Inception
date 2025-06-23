@@ -1,7 +1,9 @@
 version: '3.8'
 
 services:
-  db:
+  mariadb:
+    container_name: mariadb
+    image: mariadb
     build:
       context: ./requirements/mariadb
     healthcheck:
@@ -12,7 +14,7 @@ services:
     env_file:
       - ./.env
     volumes:
-      - /home/khadj-me/data/db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
     networks:
@@ -20,27 +22,31 @@ services:
     restart: always
 
   nginx:
+    container_name: nginx
+    image: nginx
     build:
       context: ./requirements/nginx
     volumes:
-      - /home/khadj-me/data/wp_data:/var/www/html
+      - wp_data:/var/www/html
     ports:
       - "443:443"
     depends_on:
-      - wp
+      - wordpress
     networks:
       - wp_network
     restart: always
     
-  wp:
+  wordpress:
+    container_name: wordpress
+    image: wordpress
     build:
       context: ./requirements/wordpress
     env_file:
       - ./.env
     volumes:
-      - /home/khadj-me/data/wp_data:/var/www/html
+      - wp_data:/var/www/html
     depends_on:
-      db:
+      mariadb:
         condition: service_healthy
     ports: 
       - "9000:9000"
@@ -48,5 +54,21 @@ services:
       - wp_network
     restart: always
 
+volumes:
+  db_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/khadj-me/data/db_data
+      o: bind
+  wp_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/khadj-me/data/wp_data
+      o: bind
+
+
 networks:
   wp_network:
+    driver: bridge
