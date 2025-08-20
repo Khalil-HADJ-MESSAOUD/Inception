@@ -14,10 +14,9 @@ NGINX:
 
 ---
 
-- [ ] Manage the secrets in docker compose and then update .env with value paths
 - [x] Setup port 443
-- [ ] (optional) adjust volume perms in vm-setup.sh
-- [ ] maybe remove user creation in mariadb entrypoint script
+- [x] (optional) adjust volume perms in vm-setup.sh
+- [x] maybe remove user creation in mariadb entrypoint script
 
 # SETUP FOR EVAL
 

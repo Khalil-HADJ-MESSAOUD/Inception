@@ -20,7 +20,9 @@ if [ ! -f "$CONFIG_FILE" ]; then
   sed -i "s/database_name_here/${MYSQL_DATABASE}/"  "$CONFIG_FILE"
   sed -i "s/username_here/${MYSQL_USER}/"           "$CONFIG_FILE"
   sed -i "s/password_here/${MYSQL_PASSWORD}/"       "$CONFIG_FILE"
-  sed -i "s/localhost/${MYSQL_HOST:-mariadb}/"            "$CONFIG_FILE"
+  sed -i "s/localhost/${MYSQL_HOST:-mariadb}/"      "$CONFIG_FILE"
+  
+  sed -i "/define( 'DB_HOST'/a define('WP_HOME', 'https://khadj-me.42.fr');\ndefine('WP_SITEURL', 'https://khadj-me.42.fr');" "$CONFIG_FILE"
 
   if [[ "${WP_DEBUG,,}" == "true" ]]; then
     sed -i "s/define( 'WP_DEBUG', false );/define( 'WP_DEBUG', true );/" "$CONFIG_FILE"

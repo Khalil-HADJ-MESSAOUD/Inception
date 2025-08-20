@@ -1,11 +1,8 @@
-version: '3.8'
-
 services:
   mariadb:
-    container_name: mariadb
-    image: mariadb-1
     build:
       context: ./requirements/mariadb
+    image: mariadb
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
       interval: 5s
@@ -21,11 +18,24 @@ services:
       - wp_network
     restart: always
 
+  nginx:
+    build:
+      context: ./requirements/nginx
+    image: nginx
+    volumes:
+      - wp_data:/var/www/html
+    ports:
+      - "443:443"
+    depends_on:
+      - wordpress
+    networks:
+      - wp_network
+    restart: always
+    
   wordpress:
-    container_name: wordpress
-    image: wordpress-1
     build:
       context: ./requirements/wordpress
+    image: wordpress
     env_file:
       - ./.env
     volumes:
@@ -39,30 +49,11 @@ services:
       - wp_network
     restart: always
 
-  nginx:
-    container_name: nginx
-    image: nginx-1
-    volumes:
-      - wp_data:/var/www/html:ro
-    build:
-      context: ./requirements/nginx
-    ports:
-      - "443:443"
-    depends_on:
-      - wordpress
-    networks:
-      - wp_network
-    restart: always
-    
+networks:
+  wp_network:
+    driver: bridge
 
 volumes:
-  db_data:
-    name: db_data
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/khadj-me/data/db_data
-      o: bind
   wp_data:
     name: wp_data
     driver: local
@@ -70,8 +61,10 @@ volumes:
       type: none
       device: /home/khadj-me/data/wp_data
       o: bind
-
-
-networks:
-  wp_network:
-    driver: bridge
+  db_data:
+    name: db_data
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/khadj-me/data/db_data
+      o: bind

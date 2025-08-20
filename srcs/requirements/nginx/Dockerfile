@@ -1,6 +1,8 @@
 
 FROM debian:bullseye
 
+ENV DEBIAN_FRONTEND=noninteractive
+
 RUN apt-get update && \
     apt-get install -y nginx openssl && \
     mkdir -p /etc/nginx/ssl && \
@@ -10,6 +12,8 @@ RUN apt-get update && \
       -keyout /etc/nginx/ssl/khadj-me.42.fr.key \
       -out /etc/nginx/ssl/khadj-me.42.fr.crt && \
     apt-get clean
+
+RUN rm -rf /var/www/html/index.nginx-debian.html
 
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
